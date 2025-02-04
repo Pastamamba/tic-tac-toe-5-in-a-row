@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
-import MainMenu from './components/MainMenu'
-import Board from './components/Board'
+import React, { useState } from 'react';
+import MainMenu, { GameType } from './components/MainMenu';
+import Board from './components/Board';
+import MyllyBoard from './components/MyllyBoard';
 
 const App: React.FC = () => {
-    // Manage which screen is active: "menu" or "game"
     const [screen, setScreen] = useState<'menu' | 'game'>('menu');
+    const [gameType, setGameType] = useState<GameType>('tic-tac-toe');
 
-    const startGame = () => {
+    const startGame = (selectedGame: GameType) => {
+        setGameType(selectedGame);
         setScreen('game');
     };
 
@@ -17,7 +19,12 @@ const App: React.FC = () => {
     return (
         <div className="w-full h-screen">
             {screen === 'menu' && <MainMenu onStart={startGame} />}
-            {screen === 'game' && <Board onGameOver={handleGameOver} />}
+            {screen === 'game' && (
+                <>
+                    {gameType === 'tic-tac-toe' && <Board onGameOver={handleGameOver} />}
+                    {gameType === 'mylly' && <MyllyBoard onGameOver={handleGameOver} />}
+                </>
+            )}
         </div>
     );
 };
