@@ -337,53 +337,77 @@ const MyllyBoard: React.FC<MyllyBoardProps> = ({ onGameOver }) => {
     const boardHeight = 7 * cellSize;
 
     return (
-        <div className="relative w-full h-full bg-green-100 flex flex-col items-center justify-center">
+        <div
+            className="flex flex-col items-center justify-center"
+            style={{
+                width: '100%',
+                height: '100%',
+                backgroundColor: '#eeeeee', // neutraali tausta (sivun tausta)
+            }}
+        >
+            {/* Laudan "tausta": puunvärinen */}
             <div
-                className="relative bg-white border border-gray-400"
-                style={{ width: boardWidth, height: boardHeight }}
+                className="relative"
+                style={{
+                    width: boardWidth,
+                    height: boardHeight,
+                    backgroundColor: '#f8e3c1',  // puun sävy
+                    border: '2px solid #8b5a2b', // tumma sävy reunaksi
+                    boxShadow: '0 0 8px rgba(0,0,0,0.4)' // kevyt varjo
+                }}
             >
-                {positions.map((pos) => {
+                {positions.map(pos => {
                     const left = pos.x * cellSize;
                     const top = pos.y * cellSize;
                     const isSelected = selectedPiece === pos.id;
+
                     return (
                         <div
                             key={pos.id}
                             onClick={() => handlePositionClick(pos.id)}
+                            // Tehdään ruudusta täysin läpinäkyvä, ei reunaa
                             style={{
                                 position: 'absolute',
                                 left,
                                 top,
                                 width: cellSize,
                                 height: cellSize,
-                                backgroundColor: isSelected ? '#ffeeba' : 'transparent',
+                                cursor: 'pointer',
+                                backgroundColor: 'transparent',
                             }}
-                            className="border border-gray-200 flex items-center justify-center cursor-pointer"
                         >
-                            {board[pos.id] === 'blue' && (
-                                <span className="text-blue-500 text-xl font-bold">●</span>
-                            )}
-                            {board[pos.id] === 'red' && (
-                                <span className="text-red-500 text-xl font-bold">●</span>
+                            {/* Jos nappula on laudalla, renderöidään se */}
+                            {board[pos.id] && (
+                                <div
+                                    className="rounded-full flex items-center justify-center"
+                                    style={{
+                                        width: '32px',
+                                        height: '32px',
+                                        // "blue" → musta, "red" → vaalea puunväri
+                                        backgroundColor: board[pos.id] === 'blue' ? '#000' : '#d4ad7f',
+                                        border: isSelected ? '2px solid yellow' : '2px solid transparent'
+                                    }}
+                                />
                             )}
                         </div>
                     );
                 })}
             </div>
 
-            {/* Viesti pelaajille */}
+            {/* Info pelaajalle */}
             {!winner ? (
                 <div className="mt-4 text-lg">
                     {mustRemove ? (
                         <p>
-              <span className={currentPlayer === 'blue' ? 'text-blue-500' : 'text-red-500'}>
+              <span style={{ color: currentPlayer === 'blue' ? 'black' : '#8b5a2b' }}>
                 {currentPlayer}
               </span>{' '}
-                            muodostit myllyn – valitse vastustajan nappula poistettavaksi!
+                            muodostit myllyn – valitse vastustajan nappula!
                         </p>
                     ) : (
                         <p>
-                            Vuoro: <span className={currentPlayer === 'blue' ? 'text-blue-500' : 'text-red-500'}>
+                            Vuoro:{' '}
+                            <span style={{ color: currentPlayer === 'blue' ? 'black' : '#8b5a2b' }}>
                 {currentPlayer}
               </span>
                         </p>
@@ -392,22 +416,22 @@ const MyllyBoard: React.FC<MyllyBoardProps> = ({ onGameOver }) => {
             ) : (
                 <div className="mt-4 text-2xl font-bold">
                     {winner === 'blue' ? (
-                        <span className="text-blue-500">Blue Wins!</span>
+                        <span style={{ color: 'black' }}>Black Wins!</span>
                     ) : (
-                        <span className="text-red-500">Red Wins!</span>
+                        <span style={{ color: '#8b5a2b' }}>Wood Wins!</span>
                     )}
                 </div>
             )}
 
-            {/* Lopetustekstien modali */}
+            {/* Modali voiton jälkeen */}
             {winner && (
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center z-10">
                     <div className="bg-white p-6 rounded shadow-lg text-center">
                         <h2 className="text-3xl font-bold mb-4">
                             {winner === 'blue' ? (
-                                <span className="text-blue-500">Blue Wins!</span>
+                                <span style={{ color: 'black' }}>Black Wins!</span>
                             ) : (
-                                <span className="text-red-500">Red Wins!</span>
+                                <span style={{ color: '#8b5a2b' }}>Wood Wins!</span>
                             )}
                         </h2>
                         <div className="flex gap-4 justify-center">
