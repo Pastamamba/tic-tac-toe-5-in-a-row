@@ -1,6 +1,7 @@
+// MainMenu.tsx
 import React, { useState } from 'react';
 
-export type GameType = 'tic-tac-toe' | 'mylly';
+export type GameType = 'tic-tac-toe' | 'mylly' | 'mutka-mato';
 
 interface MainMenuProps {
     onStart: (game: GameType) => void;
@@ -24,6 +25,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ onStart }) => {
                 >
                     <option value="tic-tac-toe">Tic Tac Toe 5-in-a-Row</option>
                     <option value="mylly">Mylly (Nine Men's Morris)</option>
+                    <option value="mutka-mato">MutkaMato</option>
                 </select>
             </div>
             <button

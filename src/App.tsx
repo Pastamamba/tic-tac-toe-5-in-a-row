@@ -1,7 +1,9 @@
+// App.tsx
 import React, { useState } from 'react';
 import MainMenu, { GameType } from './components/MainMenu';
 import Board from './components/Board';
 import MyllyBoard from './components/MyllyBoard';
+import MutkaMatoBoard from './components/MutkaMatoBoard';
 
 const App: React.FC = () => {
     const [screen, setScreen] = useState<'menu' | 'game'>('menu');
@@ -23,6 +25,7 @@ const App: React.FC = () => {
                 <>
                     {gameType === 'tic-tac-toe' && <Board onGameOver={handleGameOver} />}
                     {gameType === 'mylly' && <MyllyBoard onGameOver={handleGameOver} />}
+                    {gameType === 'mutka-mato' && <MutkaMatoBoard onGameOver={handleGameOver} />}
                 </>
             )}
         </div>
